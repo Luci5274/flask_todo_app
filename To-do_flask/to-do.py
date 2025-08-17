@@ -73,10 +73,7 @@ class ToDoList:
             with open(self.filename, 'r') as f:
                 data = json.load(f)
                 return [Task.from_dict(t) for t in data]
-        return [
-            Task("buy milk", "complete", "low"),
-            Task("do laundry", "not started", "low")
-        ]
+        return []
 
     def save(self):
         with open(self.filename, 'w') as f:

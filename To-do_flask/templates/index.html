@@ -2,9 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>To-Do List</title>
+    <!-- Link to CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <h1>My To-Do List</h1>
 
+    <!-- Add Task Form -->
+    <form action="{{ url_for('add_task') }}" method="POST" class="add-task-form">
+        <label>
+            Task:
+            <input type="text" name="task" placeholder="clean room" required>
+        </label>
+
+        <label>
+            Status:
+            <select name="status">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </label>
+
+        <label>
+            Priority:
+            <select name="priority">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </label>
+
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <ul>
+        {% for task in todo %}
+            <li>
+                <!-- Task name -->
+                <strong>{{ task.task }}:</strong>
+
+                <!-- Status -->
+                {{ task.status }}
+
+                <!-- Priority only has color -->
+                <strong>- Priority:</strong>
+                <span class="{{ task.priority }}">{{ task.priority|capitalize }}</span>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
