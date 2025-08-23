@@ -1,17 +1,8 @@
 [
     {
-        "task": "flask to do app",
-        "status": "in progress",
-        "priority": "medium"
-    },
-    {
-        "task": "CI/CD pipeline disco",
+        "id": "wPL2kz",
+        "task": "Finish To do list using flask",
         "status": "In Progress",
-        "priority": "High"
-    },
-    {
-        "task": "get job",
-        "status": "In Progress",
-        "priority": "Low"
+        "priority": "Medium"
     }
 ]

@@ -1,11 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My To-Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
 <main>
     <h1>My To-Do List</h1>
 
     <!-- Toggle Button -->
     <button id="toggle-add-task">Add Task</button>
 
-    <!-- Add Task Form (hidden via CSS) -->
-    <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST" class="add-task-form hidden">
+    <!-- Add Task Form (hidden by default) -->
+    <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST" class="hidden">
         <div>
             <label for="task">Task:</label>
             <input id="task" type="text" name="task" placeholder="clean room" required>
@@ -36,13 +46,16 @@
     {% if todo %}
         <ul id="task-list">
             {% for task in todo %}
-                <li data-id="{{ task.id }}">
-                    <span class="task-text">
+                <li data-id="{{ task.id }}" id="task-item">
+                    <!-- Clicking this toggles the form -->
+                    <div class="task-text">
                         <strong>{{ task.task }}:</strong>
                         {{ task.status }}
                         <strong>- Priority:</strong>
-                        <span class="{{ task.priority|lower|trim }}">{{ task.priority|capitalize }}</span>
-                    </span>
+                        <span class="{{ task.priority|lower|trim }}">
+                            {{ task.priority|capitalize }}
+                        </span>
+                    </div>
 
                     <!-- Hidden edit/delete form -->
                     <div class="task-form hidden">
@@ -72,3 +85,8 @@
         <p>No tasks yet. Add one above!</p>
     {% endif %}
 </main>
+
+<!-- Link JS at bottom so DOM is ready -->
+<script src="{{ url_for('static', filename='toggle.js') }}"></script>
+</body>
+</html>

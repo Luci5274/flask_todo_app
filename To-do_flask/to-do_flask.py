@@ -1,30 +1,60 @@
 import os
 import json
 from flask import Flask, render_template, request, redirect, url_for
-from uuid import uuid4
+import secrets
+import string
 
 app = Flask(__name__)
 
 DATA_FILE = 'todo.json'
 
+def generate_unique_id(existing_ids, length=6):
+    """Generate a random alphanumeric ID that doesn't collide with existing IDs."""
+    alphabet = string.ascii_letters + string.digits
+    while True:
+        new_id = ''.join(secrets.choice(alphabet) for _ in range(length))
+        if new_id not in existing_ids:
+            return new_id
+
 def load_list():
+    """
+    Load the to-do list from the JSON file.
+    If the file doesn't exist or is invalid, return an empty list.
+    Ensure every task has a unique 'id'.
+    """
     if not os.path.exists(DATA_FILE):
         return []
+
     try:
         with open(DATA_FILE, 'r') as f:
-            return json.load(f)
+            todo = json.load(f)
     except json.JSONDecodeError:
         return []
 
+    # Track existing IDs
+    existing_ids = {task.get('id') for task in todo if task.get('id')}
+    updated = False
+    for task in todo:
+        if 'id' not in task or not task['id']:
+            task['id'] = generate_unique_id(existing_ids)
+            existing_ids.add(task['id'])
+            updated = True
+    if updated:
+        save_list(todo)  # Save the updated list with IDs
+
+    return todo
+
 def save_list(todo):
+    """Save the to-do list to the JSON file."""
     with open(DATA_FILE, 'w') as f:
         json.dump(todo, f, indent=4)
 
 @app.route('/add_task', methods=['POST'])
 def add_task():
     todo = load_list()
+    existing_ids = {task.get('id') for task in todo}
     new_task = {
-        'id': str(uuid4()),
+        'id': generate_unique_id(existing_ids),
         'task': request.form['task'],
         'status': request.form['status'],
         'priority': request.form['priority']
@@ -51,6 +81,11 @@ def delete_task(task_id):
     todo = [task for task in todo if task['id'] != task_id]
     save_list(todo)
     return redirect(url_for('show_todo'))
+
+# --- DEBUG ROUTE ---
+@app.route('/delete_task/test')
+def test_delete():
+    return "Delete route works!"
 
 @app.route('/')
 def show_todo():
