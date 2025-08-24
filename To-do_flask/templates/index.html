@@ -8,83 +8,85 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<main>
-    <h1>My To-Do List</h1>
+<div class = 'todo-container'>
+    <main>
+        <h1>My To-Do List</h1>
 
-    <!-- Toggle Button -->
-    <button id="toggle-add-task">Add Task</button>
+        <!-- Toggle Button -->
+        <button id="toggle-add-task">Add Task</button>
 
-    <!-- Add Task Form (hidden by default) -->
-    <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST" class="hidden">
-        <div>
-            <label for="task">Task:</label>
-            <input id="task" type="text" name="task" placeholder="clean room" required>
-        </div>
+        <!-- Add Task Form (hidden by default) -->
+        <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST" class="hidden">
+            <div>
+                <label for="task">Task:</label>
+                <input id="task" type="text" name="task" placeholder="clean room" required>
+            </div>
 
-        <div>
-            <label for="status">Status:</label>
-            <select id="status" name="status">
-                <option value="Not Started">Not Started</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-            </select>
-        </div>
+            <div>
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Done">Done</option>
+                </select>
+            </div>
 
-        <div>
-            <label for="priority">Priority:</label>
-            <select id="priority" name="priority">
-                <option value="High">High</option>
-                <option value="Medium" selected>Medium</option>
-                <option value="Low">Low</option>
-            </select>
-        </div>
+            <div>
+                <label for="priority">Priority:</label>
+                <select id="priority" name="priority">
+                    <option value="High">High</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
 
-        <button type="submit">Add Task</button>
-    </form>
+            <button type="submit">Add Task</button>
+        </form>
 
-    <!-- Task List -->
-    {% if todo %}
-        <ul id="task-list">
-            {% for task in todo %}
-                <li data-id="{{ task.id }}" id="task-item">
-                    <!-- Clicking this toggles the form -->
-                    <div class="task-text">
-                        <strong>{{ task.task }}:</strong>
-                        {{ task.status }}
-                        <strong>- Priority:</strong>
-                        <span class="{{ task.priority|lower|trim }}">
-                            {{ task.priority|capitalize }}
-                        </span>
-                    </div>
+        <!-- Task List -->
+        {% if todo %}
+            <ul id="task-list">
+                {% for task in todo %}
+                    <li data-id="{{ task.id }}" id="task-item">
+                        <!-- Clicking this toggles the form -->
+                        <div class="task-text">
+                            <strong>{{ task.task }}:</strong>
+                            {{ task.status }}
+                            <strong>- Priority:</strong>
+                            <span class="{{ task.priority|lower|trim }}">
+                                {{ task.priority|capitalize }}
+                            </span>
+                        </div>
 
-                    <!-- Hidden edit/delete form -->
-                    <div class="task-form hidden">
-                        <form action="{{ url_for('edit_task', task_id=task.id) }}" method="POST">
-                            <input type="text" name="task" value="{{ task.task }}" required>
-                            <select name="status">
-                                <option value="Not Started" {% if task.status == "Not Started" %}selected{% endif %}>Not Started</option>
-                                <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
-                                <option value="Done" {% if task.status == "Done" %}selected{% endif %}>Done</option>
-                            </select>
-                            <select name="priority">
-                                <option value="High" {% if task.priority == "High" %}selected{% endif %}>High</option>
-                                <option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>Medium</option>
-                                <option value="Low" {% if task.priority == "Low" %}selected{% endif %}>Low</option>
-                            </select>
-                            <button type="submit">Save</button>
-                        </form>
+                        <!-- Hidden edit/delete form -->
+                        <div class="task-form hidden">
+                            <form action="{{ url_for('edit_task', task_id=task.id) }}" method="POST">
+                                <input type="text" name="task" value="{{ task.task }}" required>
+                                <select name="status">
+                                    <option value="Not Started" {% if task.status == "Not Started" %}selected{% endif %}>Not Started</option>
+                                    <option value="In Progress" {% if task.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                                    <option value="Done" {% if task.status == "Done" %}selected{% endif %}>Done</option>
+                                </select>
+                                <select name="priority">
+                                    <option value="High" {% if task.priority == "High" %}selected{% endif %}>High</option>
+                                    <option value="Medium" {% if task.priority == "Medium" %}selected{% endif %}>Medium</option>
+                                    <option value="Low" {% if task.priority == "Low" %}selected{% endif %}>Low</option>
+                                </select>
+                                <button type="submit">Save</button>
+                            </form>
 
-                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tasks yet. Add one above!</p>
-    {% endif %}
-</main>
+                            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tasks yet. Add one above!</p>
+        {% endif %}
+    </main>
+</div>
 
 <!-- Link JS at bottom so DOM is ready -->
 <script src="{{ url_for('static', filename='toggle.js') }}"></script>

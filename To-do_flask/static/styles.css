@@ -1,18 +1,7 @@
+
+
 .high { color: red; }
 .medium { color: orange; }
 .low { color: green; }
 
 .hidden { display: none; }
-
-.task-form {
-    margin-top: 8px;
-}
-
-#task-item {
-    cursor: pointer;
-
-}
-
-#task-item:hover {
-    text-decoration: underline;
-}
