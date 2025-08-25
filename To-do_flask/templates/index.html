@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <title>My To-Do List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<div class = 'todo-container'>
+<div class='todo-container'>
     <main>
         <h1>My To-Do List</h1>
 
-        <!-- Toggle Button -->
+        <!-- Toggle Add Task Form -->
         <button id="toggle-add-task">Add Task</button>
 
-        <!-- Add Task Form (hidden by default) -->
-        <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST" class="hidden">
+        <form id="add-task-form" action="{{ url_for('add_task') }}" method="POST">
             <div>
                 <label for="task">Task:</label>
                 <input id="task" type="text" name="task" placeholder="clean room" required>
@@ -43,12 +41,10 @@
             <button type="submit">Add Task</button>
         </form>
 
-        <!-- Task List -->
         {% if todo %}
             <ul id="task-list">
                 {% for task in todo %}
-                    <li data-id="{{ task.id }}" id="task-item">
-                        <!-- Clicking this toggles the form -->
+                    <li data-id="{{ task.id }}" class="task-item">
                         <div class="task-text">
                             <strong>{{ task.task }}:</strong>
                             {{ task.status }}
@@ -58,8 +54,7 @@
                             </span>
                         </div>
 
-                        <!-- Hidden edit/delete form -->
-                        <div class="task-form hidden">
+                        <div class="task-form">
                             <form action="{{ url_for('edit_task', task_id=task.id) }}" method="POST">
                                 <input type="text" name="task" value="{{ task.task }}" required>
                                 <select name="status">
@@ -88,7 +83,6 @@
     </main>
 </div>
 
-<!-- Link JS at bottom so DOM is ready -->
 <script src="{{ url_for('static', filename='toggle.js') }}"></script>
 </body>
 </html>

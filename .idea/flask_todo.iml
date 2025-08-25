@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/To-do_flask/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10 virtualenv at C:\Users\Luci\Documents\Code\Practice_repo\flask_todo\To-do_flask\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

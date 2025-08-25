@@ -6,23 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle Add Task form
     if (toggleButton && addTaskForm) {
         toggleButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent bubbling messing with li toggles
-            addTaskForm.classList.toggle('hidden');
+            e.stopPropagation();
+            addTaskForm.classList.toggle('visible'); // toggle visibility
         });
     }
 
-    // Toggle the per-task edit/delete form by clicking on the li
+    // Toggle per-task edit/delete form
     if (taskList) {
         taskList.addEventListener('click', (event) => {
-            const li = event.target.closest('li');
-            if (!li) return;
+            const taskText = event.target.closest('.task-text');
+            if (!taskText) return;
 
-            // If the user clicked inside a form (edit/delete), do nothing
-            if (event.target.closest('.task-form')) return;
+            const li = taskText.closest('li');
+            if (!li) return;
 
             const form = li.querySelector('.task-form');
             if (form) {
-                form.classList.toggle('hidden');
+                form.classList.toggle('visible');
             }
         });
     }

@@ -6,22 +6,19 @@ import string
 
 app = Flask(__name__)
 
-DATA_FILE = 'todo.json'
+# Fixed path to be absolute
+DATA_FILE = os.path.join(app.root_path, 'todo.json')
+
 
 def generate_unique_id(existing_ids, length=6):
-    """Generate a random alphanumeric ID that doesn't collide with existing IDs."""
     alphabet = string.ascii_letters + string.digits
     while True:
         new_id = ''.join(secrets.choice(alphabet) for _ in range(length))
         if new_id not in existing_ids:
             return new_id
 
+
 def load_list():
-    """
-    Load the to-do list from the JSON file.
-    If the file doesn't exist or is invalid, return an empty list.
-    Ensure every task has a unique 'id'.
-    """
     if not os.path.exists(DATA_FILE):
         return []
 
@@ -31,7 +28,6 @@ def load_list():
     except json.JSONDecodeError:
         return []
 
-    # Track existing IDs
     existing_ids = {task.get('id') for task in todo if task.get('id')}
     updated = False
     for task in todo:
@@ -40,14 +36,15 @@ def load_list():
             existing_ids.add(task['id'])
             updated = True
     if updated:
-        save_list(todo)  # Save the updated list with IDs
+        save_list(todo)
 
     return todo
 
+
 def save_list(todo):
-    """Save the to-do list to the JSON file."""
     with open(DATA_FILE, 'w') as f:
         json.dump(todo, f, indent=4)
+
 
 @app.route('/add_task', methods=['POST'])
 def add_task():
@@ -63,6 +60,7 @@ def add_task():
     save_list(todo)
     return redirect(url_for('show_todo'))
 
+
 @app.route('/edit_task/<task_id>', methods=['POST'])
 def edit_task(task_id):
     todo = load_list()
@@ -75,6 +73,7 @@ def edit_task(task_id):
     save_list(todo)
     return redirect(url_for('show_todo'))
 
+
 @app.route('/delete_task/<task_id>', methods=['POST'])
 def delete_task(task_id):
     todo = load_list()
@@ -82,15 +81,12 @@ def delete_task(task_id):
     save_list(todo)
     return redirect(url_for('show_todo'))
 
-# --- DEBUG ROUTE ---
-@app.route('/delete_task/test')
-def test_delete():
-    return "Delete route works!"
 
 @app.route('/')
 def show_todo():
     todo_list = load_list()
     return render_template('index.html', todo=todo_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
