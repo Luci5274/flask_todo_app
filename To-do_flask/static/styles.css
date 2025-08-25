@@ -22,6 +22,12 @@ body {
     padding: 40px; /* Space around content */
 }
 
+/* header 1 */
+h1 {
+    text-align:center;
+}
+
+
 /* Card wrapper for the to-do list */
 .todo-container {
     background-color: #fff; /* White background for card */
