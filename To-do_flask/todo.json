@@ -4,5 +4,11 @@
         "task": "Finish To do list using flask",
         "status": "In Progress",
         "priority": "Medium"
+    },
+    {
+        "id": "tysF2Y",
+        "task": "CI/CD pipeline disco",
+        "status": "Done",
+        "priority": "Low"
     }
 ]
